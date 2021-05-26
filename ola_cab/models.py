@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
 # Create your models here.
@@ -18,21 +19,15 @@ class Car(models.Model):
         verbose_name_plural = 'cars'
 
 
-class Customer(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    phone = models.BigIntegerField()
-    address = models.TextField()
-    created = models.DateTimeField()
-
-    def __str__(self):
-        return str(self.id) + '-' + str(self.name)
-
-    class Meta:
-        verbose_name_plural = 'customers'
+class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
+    phone = models.BigIntegerField(null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    created = models.DateTimeField(null=True, blank=True)
 
 
 class SlotBooking(models.Model):
-    customer_name = models.OneToOneField(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    customer_name = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     car_name = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True)
     duration = models.IntegerField()
     amount = models.IntegerField()

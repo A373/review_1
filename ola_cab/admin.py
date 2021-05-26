@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Car, Customer, SlotBooking
+from .models import Car, CustomUser, SlotBooking
+from django.contrib.auth.admin import UserAdmin
 
 
 # Register your models here.
+
 
 class CarAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'seats', 'car_type']
@@ -10,10 +12,19 @@ class CarAdmin(admin.ModelAdmin):
     list_filter = ['seats', 'car_type']
 
 
-class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'phone', 'address', 'created']
-    search_fields = ['name']
-    list_filter = ['name']
+class CustomUserAdmin(UserAdmin):
+    list_display = ['id', 'email', 'username', 'first_name', 'last_name', 'address', 'created']
+    search_fields = ['username']
+    list_filter = ['username']
+
+
+UserAdmin.fieldsets += (
+    (
+        'Custom fields', {
+            'fields': ('address', 'created')
+        }
+    ),
+)
 
 
 class SlotBookingAdmin(admin.ModelAdmin):
@@ -23,5 +34,5 @@ class SlotBookingAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Car, CarAdmin)
-admin.site.register(Customer, CustomerAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(SlotBooking, SlotBookingAdmin)
