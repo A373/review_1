@@ -20,14 +20,14 @@ class Car(models.Model):
 
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, null=True)
     phone = models.BigIntegerField(null=True, blank=True)
     address = models.TextField(null=True, blank=True)
     created = models.DateTimeField(null=True, blank=True)
 
 
 class SlotBooking(models.Model):
-    customer_name = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    customer_name = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     car_name = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True)
     duration = models.IntegerField()
     amount = models.IntegerField()
