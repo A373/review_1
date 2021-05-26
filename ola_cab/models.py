@@ -19,7 +19,7 @@ class Car(models.Model):
 
 
 class Customer(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     phone = models.BigIntegerField()
     address = models.TextField()
     created = models.DateTimeField()
@@ -32,7 +32,7 @@ class Customer(models.Model):
 
 
 class SlotBooking(models.Model):
-    customer_name = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    customer_name = models.OneToOneField(Customer, on_delete=models.SET_NULL, null=True, blank=True)
     car_name = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True, blank=True)
     duration = models.IntegerField()
     amount = models.IntegerField()
